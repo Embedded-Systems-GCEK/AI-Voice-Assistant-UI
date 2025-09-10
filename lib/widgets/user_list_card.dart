@@ -16,6 +16,7 @@ class UserListCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
@@ -54,96 +55,94 @@ class UserListCard extends StatelessWidget {
                         ),
                   )
                 else
-                  Flexible(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: recentUsers.map((user) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 18,
-                                backgroundColor: CatppuccinColors.blue,
-                                child: user.avatarPath != null
-                                    ? ClipRRect(
-                                        borderRadius: BorderRadius.circular(18),
-                                        child: Image.asset(
-                                          user.avatarPath!,
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return Text(
-                                              user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
-                                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                                    color: CatppuccinColors.base,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                            );
-                                          },
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: recentUsers.map((user) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 18,
+                              backgroundColor: CatppuccinColors.blue,
+                              child: user.avatarPath != null
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(18),
+                                      child: Image.asset(
+                                        user.avatarPath!,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Text(
+                                            user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
+                                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                                  color: CatppuccinColors.base,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  : Text(
+                                      user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
+                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                            color: CatppuccinColors.base,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                    ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    user.name,
+                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                          fontWeight: FontWeight.w500,
                                         ),
-                                      )
-                                    : Text(
-                                        user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
-                                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                              color: CatppuccinColors.base,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                      ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  if (user.email != null)
                                     Text(
-                                      user.name,
-                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    if (user.email != null)
-                                      Text(
-                                        user.email!,
-                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                              color: CatppuccinColors.subtext1,
-                                            ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    Text(
-                                      'Last active: ${_formatTimestamp(user.lastInteractionAt)}',
+                                      user.email!,
                                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                            color: CatppuccinColors.subtext0,
+                                            color: CatppuccinColors.subtext1,
                                           ),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                  ],
-                                ),
+                                  Text(
+                                    'Last active: ${_formatTimestamp(user.lastInteractionAt)}',
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                          color: CatppuccinColors.subtext0,
+                                        ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
                               ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: CatppuccinColors.blue.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  '${user.totalInteractions}',
-                                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                        color: CatppuccinColors.blue,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 10,
-                                      ),
-                                ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: CatppuccinColors.blue.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                              child: Text(
+                                '${user.totalInteractions}',
+                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                      color: CatppuccinColors.blue,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 10,
+                                    ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
                   ),
               ],
             ),

@@ -13,6 +13,7 @@ class SensorDataCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -41,6 +42,7 @@ class SensorDataCard extends StatelessWidget {
               )
             else
               Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   if (sensorData!.batteryLevel != null)
                     _buildSensorRow(

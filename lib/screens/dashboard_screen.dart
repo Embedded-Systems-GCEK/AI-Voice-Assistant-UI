@@ -25,10 +25,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<AppStateProvider>(context, listen: false);
-      provider.generateDemoData(); // Generate demo data on first load
-    });
+    // Disable auto data generation that may cause layout issues
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   final provider = Provider.of<AppStateProvider>(context, listen: false);
+    //   provider.generateDemoData(); // Generate demo data on first load
+    // });
   }
 
   @override
@@ -119,7 +120,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ? Consumer<AppStateProvider>(
               builder: (context, provider, child) {
                 return FloatingActionButton(
-                  onPressed: provider.isLoading ? null : provider.generateDemoData,
+                  onPressed: provider.isLoading 
+                      ? null 
+                      : () async {
+                          // Safely generate demo data without causing layout issues
+                          try {
+                            await provider.generateDemoData();
+                          } catch (e) {
+                            // Handle error gracefully
+                            debugPrint('Error generating demo data: $e');
+                          }
+                        },
                   child: provider.isLoading
                       ? const SizedBox(
                           width: 20,
@@ -207,6 +218,7 @@ class _DashboardTab extends StatelessWidget {
 
                 // System status and sensor data
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: StatusCard(status: provider.currentSystemStatus),
