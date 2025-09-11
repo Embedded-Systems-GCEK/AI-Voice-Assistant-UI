@@ -48,6 +48,30 @@ flutter build web --release
 - `vercel.json` - Vercel deployment configuration
 - `build/web/` - Web build output directory
 
+> old but once worked.
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "build/web",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "build/web/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/build/web/$1"
+    }
+  ]
+}
+```
+
+
 ## Features Available on Web
 
 ✅ **JARVIS Interface** - Interactive robot assistant

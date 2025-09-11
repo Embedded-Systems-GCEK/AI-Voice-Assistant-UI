@@ -162,6 +162,48 @@ vercel --prod
 - **Project name** → `ai-voice-assistant` (or custom)
 - **Directory** → `./` (current directory)
 
+## ✅ WORKING DEPLOYMENT METHOD (UPDATED)
+
+### **Quick Deploy Command:**
+```powershell
+cd e:\Git\ES-GCEK\AI-Voice-Assistant-UI\ai_voice_assistant
+./deploy.bat
+```
+
+### **Manual Steps:**
+```powershell
+# 1. Navigate to project
+cd e:\Git\ES-GCEK\AI-Voice-Assistant-UI\ai_voice_assistant
+
+# 2. Clean and build
+flutter clean
+flutter build web --release --base-href /
+
+# 3. Deploy built files
+vercel --prod build/web
+```
+
+### **🎯 Key Success Factors:**
+
+1. **✅ Base Href**: Must use `--base-href /` for proper routing
+2. **✅ Build Directory**: Deploy from `build/web` folder
+3. **✅ Local Build**: Build locally before deploying
+4. **✅ Correct Path**: Ensure you're in the project root directory
+
+### **📊 Deployment Flow:**
+```
+Local Machine → Flutter Build → build/web/ → Vercel Deploy → Live App
+```
+
+### **🔧 Troubleshooting:**
+
+| Issue | Solution |
+|-------|----------|
+| **404 Error** | Check base href is set to `/` |
+| **Build Fails** | Run `flutter doctor` and fix issues |
+| **Wrong Directory** | Ensure deploying from `build/web` |
+| **Assets Missing** | Verify `flutter build web` completed successfully |
+
 ### Phase 5: Post-Deployment Configuration
 
 #### Environment Variables Setup
@@ -295,7 +337,7 @@ jobs:
         with:
           flutter-version: '3.35.3'
       - run: flutter config --enable-web
-      - run: flutter build web --release
+      - run: flutter build web --release --base-href /
       - uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -317,23 +359,26 @@ jobs:
 
 ## ✅ Success Checklist
 
-- [ ] Flutter web enabled
-- [ ] Dependencies updated
-- [ ] Web build successful
-- [ ] Vercel CLI installed
-- [ ] Authentication completed
-- [ ] Deployment successful
-- [ ] Environment variables configured
-- [ ] App accessible via Vercel URL
-- [ ] Core features tested on web
+- [x] Flutter web enabled
+- [x] Dependencies updated
+- [x] Web build successful with `--base-href /`
+- [x] Vercel CLI installed
+- [x] Authentication completed
+- [x] Deployment successful using `vercel --prod build/web`
+- [ ] Environment variables configured (optional)
+- [x] App accessible via Vercel URL
+- [x] Core features tested on web
 
 ## 🎯 Key Takeaways
 
 1. **Flutter Web** enables cross-platform deployment
 2. **Vercel** provides excellent performance for Flutter web apps
-3. **Configuration** is crucial for proper routing and caching
-4. **Testing** on web reveals platform-specific limitations
-5. **Optimization** improves load times and user experience
+3. **Local Build + Deploy** is the most reliable method
+4. **Base Href** must be set to `/` for proper routing
+5. **Build locally** before deploying to Vercel
+6. **Deploy from `build/web`** directory
+7. **Testing** on web reveals platform-specific limitations
+8. **Optimization** improves load times and user experience
 
 ## 📞 Support & Contact
 
@@ -347,4 +392,4 @@ For issues related to:
 **Last Updated**: September 11, 2025
 **Flutter Version**: 3.35.3
 **Deployment Platform**: Vercel
-**Status**: ✅ Successfully Deployed
+**Status**: ✅ Successfully Deployed with Working Method
