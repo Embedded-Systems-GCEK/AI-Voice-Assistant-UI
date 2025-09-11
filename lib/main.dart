@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'themes/catppuccin_theme.dart';
-import 'screens/dashboard_screen_simple.dart';
+import 'screens/simple_dashboard.dart';
 import 'providers/app_state_provider.dart';
 
 Future<void> main() async {
