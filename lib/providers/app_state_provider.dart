@@ -30,7 +30,6 @@ class AppStateProvider extends ChangeNotifier {
 
   AppStateProvider() {
     // Don't automatically initialize on creation to avoid layout issues
-    // _initializeApp();
   }
 
   Future<void> _initializeApp() async {
