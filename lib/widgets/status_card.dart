@@ -13,6 +13,7 @@ class StatusCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -41,6 +42,7 @@ class StatusCard extends StatelessWidget {
               )
             else
               Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   _buildStatusRow(
                     context,

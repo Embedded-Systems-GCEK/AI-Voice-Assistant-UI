@@ -16,6 +16,7 @@ class StatisticsCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
@@ -50,6 +51,7 @@ class StatisticsCard extends StatelessWidget {
                       if (isNarrow) {
                         // Two rows layout for narrow screens
                         return Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Row(
                               children: [
@@ -170,6 +172,8 @@ class StatisticsCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             icon,
@@ -183,6 +187,8 @@ class StatisticsCard extends StatelessWidget {
                   color: color,
                   fontWeight: FontWeight.bold,
                 ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 4),
           Text(

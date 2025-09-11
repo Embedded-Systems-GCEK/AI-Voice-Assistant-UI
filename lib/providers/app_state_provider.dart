@@ -29,11 +29,11 @@ class AppStateProvider extends ChangeNotifier {
   String? get error => _error;
 
   AppStateProvider() {
-    _initializeApp();
+    // Don't automatically initialize on creation to avoid layout issues
   }
 
   Future<void> _initializeApp() async {
-    await refreshAll();
+    // await refreshAll();
   }
 
   Future<void> refreshAll() async {
