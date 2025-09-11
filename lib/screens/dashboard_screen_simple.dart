@@ -58,7 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   const SizedBox(width: 16),
                   IconButton(
                     onPressed: () {
-                      // provider.refreshAll();
+                      provider.refreshAll();
                     },
                     icon: Icon(
                       Icons.refresh,
