@@ -1,14 +1,24 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import '../config/app_config.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://localhost:5000/api';
-  static const Duration timeoutDuration = Duration(seconds: 30);
-
   // Singleton pattern
   static final ApiService _instance = ApiService._internal();
   factory ApiService() => _instance;
+  ApiService._internal();
+
+  bool _isOnline = true;
+  
+  // Getters for URLs from config
+  String get baseUrl => AppConfig.apiUrl;
+  String get usersUrl => AppConfig.usersUrl;
+  String get healthUrl => AppConfig.healthUrl;
+  Duration get timeoutDuration => AppConfig.defaultTimeout;
+
+  // Getter for online status
+  bool get isOnline => _isOnline;
   ApiService._internal();
 
   // Headers for JSON requests
@@ -19,6 +29,11 @@ class ApiService {
 
   // Example Questions API
   Future<Map<String, dynamic>> getExampleQuestions({String? category}) async {
+    // Check if offline mode is enabled and we're offline
+    if (AppConfig.enableOfflineMode && !_isOnline) {
+      return _getOfflineExampleQuestions(category);
+    }
+
     try {
       String url = '$baseUrl/example-questions';
       if (category != null) {
@@ -31,17 +46,52 @@ class ApiService {
       ).timeout(timeoutDuration);
 
       if (response.statusCode == 200) {
+        _isOnline = true; // Mark as online if successful
         return json.decode(response.body);
       } else {
         throw ApiException('Failed to fetch example questions: ${response.statusCode}');
       }
     } on SocketException {
+      _isOnline = false;
+      if (AppConfig.enableOfflineMode) {
+        return _getOfflineExampleQuestions(category);
+      }
       throw ApiException('No internet connection');
     } on http.ClientException {
+      _isOnline = false;
+      if (AppConfig.enableOfflineMode) {
+        return _getOfflineExampleQuestions(category);
+      }
       throw ApiException('Failed to connect to server');
     } catch (e) {
+      if (e is ApiException) rethrow;
+      _isOnline = false;
+      if (AppConfig.enableOfflineMode) {
+        return _getOfflineExampleQuestions(category);
+      }
       throw ApiException('Error fetching example questions: $e');
     }
+  }
+
+  // Offline fallback for example questions
+  Map<String, dynamic> _getOfflineExampleQuestions(String? category) {
+    final questions = AppConfig.defaultExampleQuestions['questions'] as List;
+    
+    if (category != null) {
+      final filteredQuestions = questions
+          .where((q) => q['category'].toString().toLowerCase() == category.toLowerCase())
+          .toList();
+      return {
+        'questions': filteredQuestions,
+        'categories': AppConfig.defaultExampleQuestions['categories'],
+        'offline': true,
+      };
+    }
+    
+    return {
+      ...AppConfig.defaultExampleQuestions,
+      'offline': true,
+    };
   }
 
   // Ask Assistant API
@@ -49,6 +99,11 @@ class ApiService {
     required String question,
     String? userId,
   }) async {
+    // Check if offline mode is enabled and we're offline
+    if (AppConfig.enableOfflineMode && !_isOnline) {
+      return _getOfflineAssistantResponse(question, userId);
+    }
+
     try {
       final requestBody = {
         'question': question,
@@ -62,19 +117,66 @@ class ApiService {
       ).timeout(timeoutDuration);
 
       if (response.statusCode == 200) {
+        _isOnline = true; // Mark as online if successful
         return json.decode(response.body);
       } else {
         final errorBody = json.decode(response.body);
         throw ApiException(errorBody['error'] ?? 'Failed to get response from assistant');
       }
     } on SocketException {
+      _isOnline = false;
+      if (AppConfig.enableOfflineMode) {
+        return _getOfflineAssistantResponse(question, userId);
+      }
       throw ApiException('No internet connection');
     } on http.ClientException {
+      _isOnline = false;
+      if (AppConfig.enableOfflineMode) {
+        return _getOfflineAssistantResponse(question, userId);
+      }
       throw ApiException('Failed to connect to server');
     } catch (e) {
       if (e is ApiException) rethrow;
+      _isOnline = false;
+      if (AppConfig.enableOfflineMode) {
+        return _getOfflineAssistantResponse(question, userId);
+      }
       throw ApiException('Error asking assistant: $e');
     }
+  }
+
+  // Offline fallback for assistant responses
+  Map<String, dynamic> _getOfflineAssistantResponse(String question, String? userId) {
+    final responses = {
+      'weather': 'I\'m currently offline and cannot access real-time weather data. Please check your internet connection for live weather updates.',
+      'battery': 'Battery information is not available in offline mode. Please reconnect to get real-time system status.',
+      'location': 'Location services are limited in offline mode. Please check your internet connection for accurate location data.',
+      'help': 'I\'m currently running in offline mode with limited functionality. I can still help with basic questions, but real-time data and advanced features require an internet connection.',
+      'default': 'I\'m currently offline and have limited capabilities. Please check your internet connection to access the full range of assistant features.'
+    };
+
+    String response = responses['default']!;
+    final lowerQuestion = question.toLowerCase();
+    
+    if (lowerQuestion.contains('weather') || lowerQuestion.contains('temperature')) {
+      response = responses['weather']!;
+    } else if (lowerQuestion.contains('battery') || lowerQuestion.contains('power')) {
+      response = responses['battery']!;
+    } else if (lowerQuestion.contains('location') || lowerQuestion.contains('where')) {
+      response = responses['location']!;
+    } else if (lowerQuestion.contains('help') || lowerQuestion.contains('what can you')) {
+      response = responses['help']!;
+    }
+
+    return {
+      'question': question,
+      'response': response,
+      'confidence_score': 0.8,
+      'response_time_ms': 100,
+      'timestamp': DateTime.now().toIso8601String(),
+      'user_id': userId,
+      'offline': true,
+    };
   }
 
   // Get User Conversation History
@@ -165,7 +267,7 @@ class ApiService {
       };
 
       final response = await http.post(
-        Uri.parse('http://localhost:5000/users'),
+        Uri.parse('$usersUrl'),
         headers: _headers,
         body: json.encode(requestBody),
       ).timeout(timeoutDuration);
@@ -190,7 +292,7 @@ class ApiService {
   Future<Map<String, dynamic>> getUsers() async {
     try {
       final response = await http.get(
-        Uri.parse('http://localhost:5000/users'),
+        Uri.parse('$usersUrl'),
         headers: _headers,
       ).timeout(timeoutDuration);
 
@@ -212,9 +314,9 @@ class ApiService {
   Future<bool> checkHealth() async {
     try {
       final response = await http.get(
-        Uri.parse('http://localhost:5000/health'),
+        Uri.parse('$healthUrl'),
         headers: _headers,
-      ).timeout(const Duration(seconds: 5));
+      ).timeout(AppConfig.healthCheckTimeout);
 
       return response.statusCode == 200;
     } catch (e) {
