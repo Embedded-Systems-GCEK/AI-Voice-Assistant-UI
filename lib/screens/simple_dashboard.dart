@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/scifi_robot_widget.dart';
+import '../services/api_service.dart';
 import 'conversation_screen.dart';
 import 'ai_chat_screen.dart';
 import 'map_screen.dart';
@@ -15,6 +16,8 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
   RobotState _robotState = RobotState.idle;
+  bool _isOnline = true;
+  final ApiService _apiService = ApiService();
 
   // List of screens for navigation
   late final List<Widget> _screens;
@@ -23,12 +26,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     _screens = [
-      _JarvisHomeScreen(robotState: _robotState, onRobotTap: _handleRobotTap), // Main JARVIS screen
+      _JarvisHomeScreen(
+        robotState: _robotState, 
+        onRobotTap: _handleRobotTap,
+        isOnline: _isOnline,
+      ), // Main JARVIS screen
       const ConversationScreen(),
       const AiChatScreen(),
       const MapScreen(),
       const UsersScreen(),
     ];
+    _checkConnectivity();
+  }
+
+  Future<void> _checkConnectivity() async {
+    final isHealthy = await _apiService.checkHealth();
+    if (mounted && isHealthy != _isOnline) {
+      setState(() {
+        _isOnline = isHealthy;
+        _screens[0] = _JarvisHomeScreen(
+          robotState: _robotState, 
+          onRobotTap: _handleRobotTap,
+          isOnline: _isOnline,
+        );
+      });
+    }
   }
 
   void _handleRobotTap() {
@@ -51,6 +73,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           break;
       }
     });
+    // Check connectivity when user interacts
+    _checkConnectivity();
   }
 
   void _onItemTapped(int index) {
@@ -58,7 +82,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _selectedIndex = index;
       // Update the JARVIS screen with new state when switching back to it
       if (index == 0) {
-        _screens[0] = _JarvisHomeScreen(robotState: _robotState, onRobotTap: _handleRobotTap);
+        _screens[0] = _JarvisHomeScreen(
+          robotState: _robotState, 
+          onRobotTap: _handleRobotTap,
+          isOnline: _isOnline,
+        );
       }
     });
   }
@@ -108,10 +136,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
 class _JarvisHomeScreen extends StatelessWidget {
   final RobotState robotState;
   final VoidCallback onRobotTap;
+  final bool isOnline;
 
   const _JarvisHomeScreen({
     required this.robotState,
     required this.onRobotTap,
+    required this.isOnline,
   });
 
   String _getStatusText() {
@@ -166,25 +196,25 @@ class _JarvisHomeScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.2),
+                      color: (isOnline ? Colors.green : Colors.orange).withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: Colors.green.withOpacity(0.5),
+                        color: (isOnline ? Colors.green : Colors.orange).withOpacity(0.5),
                         width: 1,
                       ),
                     ),
-                    child: const Row(
+                    child: Row(
                       children: [
                         Icon(
                           Icons.circle,
-                          color: Colors.green,
+                          color: isOnline ? Colors.green : Colors.orange,
                           size: 8,
                         ),
-                        SizedBox(width: 6),
+                        const SizedBox(width: 6),
                         Text(
-                          'ONLINE',
+                          isOnline ? 'ONLINE' : 'OFFLINE',
                           style: TextStyle(
-                            color: Colors.green,
+                            color: isOnline ? Colors.green : Colors.orange,
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1,
@@ -276,10 +306,12 @@ class _JarvisHomeScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        const Text(
-                          'USE NAVIGATION BELOW TO ACCESS OTHER FEATURES',
+                        Text(
+                          isOnline 
+                            ? 'USE NAVIGATION BELOW TO ACCESS OTHER FEATURES'
+                            : 'LIMITED FEATURES AVAILABLE IN OFFLINE MODE',
                           style: TextStyle(
-                            color: Colors.white38,
+                            color: isOnline ? Colors.white38 : Colors.orange.withOpacity(0.8),
                             fontSize: 8,
                             letterSpacing: 0.5,
                           ),
