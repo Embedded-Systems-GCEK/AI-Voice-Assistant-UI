@@ -38,6 +38,13 @@ A beautiful Flutter application for managing AI Voice Assistant interactions wit
 - Efficient data management and cleanup
 - Statistics and analytics
 
+### 🔌 Offline Mode Support
+- **Smart Fallbacks**: App continues to work when backend services are unavailable
+- **Offline Indicators**: Visual status indicators show connection state
+- **Graceful Degradation**: Limited but functional features in offline mode
+- **Auto-Reconnection**: Automatic connectivity checks and reconnection
+- **Environment Detection**: Automatic switching between development and production APIs
+
 ## Supported Platforms
 
 - ✅ **Windows** - Native Windows app with desktop optimizations
@@ -74,7 +81,18 @@ A beautiful Flutter application for managing AI Voice Assistant interactions wit
    flutter pub get
    ```
 
-3. **Configure Google Maps (Optional)**
+3. **Configure API Endpoints (Optional)**
+   
+   The app automatically detects the environment and uses appropriate API endpoints:
+   - **Development**: `http://localhost:5000` (default)
+   - **Production**: Configure in `lib/config/app_config.dart`
+   
+   To change the production API URL, edit the `_prodApiUrl` constant in `AppConfig`:
+   ```dart
+   static const String _prodApiUrl = 'https://your-api-domain.com';
+   ```
+
+4. **Configure Google Maps (Optional)**
    
    To use the map feature, you'll need to add your Google Maps API key:
    
@@ -94,7 +112,7 @@ A beautiful Flutter application for managing AI Voice Assistant interactions wit
    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_HERE"></script>
    ```
 
-4. **Run the application**
+5. **Run the application**
    
    **For Windows:**
    ```bash
@@ -135,6 +153,8 @@ flutter build web --release
 ```
 lib/
 ├── main.dart                 # App entry point
+├── config/
+│   └── app_config.dart       # App configuration and environment settings
 ├── themes/
 │   └── catppuccin_theme.dart # Catppuccin theme configuration
 ├── models/                   # Data models
@@ -143,7 +163,9 @@ lib/
 │   ├── sensor_data.dart
 │   └── system_status.dart
 ├── services/
-│   └── database_service.dart # SQLite database operations
+│   ├── database_service.dart # SQLite database operations
+│   ├── api_service.dart      # HTTP API client with offline support
+│   └── supabase_service.dart # Supabase integration
 ├── providers/
 │   └── app_state_provider.dart # State management
 ├── screens/                  # Main application screens
